@@ -31,6 +31,10 @@ export const postJob = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Something went wrong while creating the job.",
+            success: false
+        });
     }
 }
 // student k liye
@@ -58,6 +62,10 @@ export const getAllJobs = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Something went wrong while fetching jobs.",
+            success: false
+        });
     }
 }
 // student
@@ -76,16 +84,19 @@ export const getJobById = async (req, res) => {
         return res.status(200).json({ job, success: true });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Something went wrong while fetching the job.",
+            success: false
+        });
     }
 }
 // admin kitne job create kra hai abhi tk
 export const getAdminJobs = async (req, res) => {
     try {
         const adminId = req.id;
-        const jobs = await Job.find({ created_by: adminId }).populate({
-            path:'company',
-            createdAt:-1
-        });
+        const jobs = await Job.find({ created_by: adminId })
+            .populate({ path: 'company' })
+            .sort({ createdAt: -1 });
         if (!jobs) {
             return res.status(404).json({
                 message: "Jobs not found.",
@@ -98,5 +109,9 @@ export const getAdminJobs = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Something went wrong while fetching admin jobs.",
+            success: false
+        });
     }
 }
