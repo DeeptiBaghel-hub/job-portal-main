@@ -43,6 +43,10 @@ export const applyJob = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Something went wrong while applying for the job.",
+            success: false
+        });
     }
 };
 export const getAppliedJobs = async (req,res) => {
@@ -68,6 +72,10 @@ export const getAppliedJobs = async (req,res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Something went wrong while fetching applied jobs.",
+            success: false
+        });
     }
 }
 // admin dekhega kitna user ne apply kiya hai
@@ -89,10 +97,14 @@ export const getApplicants = async (req,res) => {
         };
         return res.status(200).json({
             job,
-            succees:true
+            success:true
         });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Something went wrong while fetching applicants.",
+            success: false
+        });
     }
 }
 export const updateStatus = async (req,res) => {
@@ -126,5 +138,9 @@ export const updateStatus = async (req,res) => {
 
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Something went wrong while updating the status.",
+            success: false
+        });
     }
 }
