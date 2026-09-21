@@ -4,10 +4,14 @@ import axios from "axios"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 
-const useGetAppliedJobs = () => {
+const useGetAppliedJobs = (enabled = true) => {
     const dispatch = useDispatch();
 
     useEffect(()=>{
+        if (!enabled) {
+            return;
+        }
+
         const fetchAppliedJobs = async () => {
             try {
                 const res = await axios.get(`${APPLICATION_API_END_POINT}/get`, {withCredentials:true});
@@ -20,6 +24,6 @@ const useGetAppliedJobs = () => {
             }
         }
         fetchAppliedJobs();
-    },[])
+    },[enabled])
 };
 export default useGetAppliedJobs;

@@ -14,15 +14,15 @@ import useGetAppliedJobs from '@/hooks/useGetAppliedJobs'
 const isResume = true;
 
 const Profile = () => {
-    useGetAppliedJobs();
     const [open, setOpen] = useState(false);
     const {user} = useSelector(store=>store.auth);
     const isStudent = user?.role === "student";
+    useGetAppliedJobs(isStudent);
 
     return (
         <div>
             <Navbar />
-            <div className='max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8'>
+            <div className='max-w-4xl mx-auto bg-background text-foreground border border-border rounded-2xl my-5 p-8'>
                 <div className='flex justify-between'>
                     <div className='flex items-center gap-4'>
                         <Avatar className="h-24 w-24">
@@ -62,7 +62,7 @@ const Profile = () => {
                     }
                 </div>}
             </div>
-            {isStudent && <div className='max-w-4xl mx-auto bg-white rounded-2xl'>
+            {isStudent && <div className='max-w-4xl mx-auto bg-background text-foreground rounded-2xl'>
                 <h1 className='font-bold text-lg my-5'>Applied Jobs</h1>
                 {/* Applied Job Table   */}
                 <AppliedJobTable />
