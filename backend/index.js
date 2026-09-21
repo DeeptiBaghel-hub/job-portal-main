@@ -19,11 +19,12 @@ app.use(cookieParser());
 const allowedOrigins = (process.env.CLIENT_URL || process.env.FRONTEND_URL || 'http://localhost:5173')
     .split(',')
     .map((origin) => origin.trim())
+    .map((origin) => origin.replace(/\/+$/, ''))
     .filter(Boolean);
 
 const corsOptions = {
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (!origin || allowedOrigins.includes(origin.replace(/\/+$/, ''))) {
             return callback(null, true);
         }
 
@@ -61,5 +62,4 @@ const startServer = async () => {
 };
 
 startServer();
-
 

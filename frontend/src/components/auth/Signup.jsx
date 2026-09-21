@@ -56,7 +56,7 @@ const Signup = () => {
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || "Unable to connect to the server. Please try again.");
         } finally{
             dispatch(setLoading(false));
         }
@@ -117,6 +117,7 @@ const Signup = () => {
                         <RadioGroup className="flex items-center gap-4 my-5">
                             <div className="flex items-center space-x-2">
                                 <Input
+                                    id="signup-student-role"
                                     type="radio"
                                     name="role"
                                     value="student"
@@ -124,10 +125,11 @@ const Signup = () => {
                                     onChange={changeEventHandler}
                                     className="cursor-pointer"
                                 />
-                                <Label htmlFor="r1">Student</Label>
+                                <Label htmlFor="signup-student-role">Student</Label>
                             </div>
                             <div className="flex items-center space-x-2">
                                 <Input
+                                    id="signup-recruiter-role"
                                     type="radio"
                                     name="role"
                                     value="recruiter"
@@ -135,7 +137,7 @@ const Signup = () => {
                                     onChange={changeEventHandler}
                                     className="cursor-pointer"
                                 />
-                                <Label htmlFor="r2">Recruiter</Label>
+                                <Label htmlFor="signup-recruiter-role">Recruiter</Label>
                             </div>
                         </RadioGroup>
                         <div className='flex items-center gap-2'>
