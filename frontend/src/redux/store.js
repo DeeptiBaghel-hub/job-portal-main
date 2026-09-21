@@ -11,9 +11,20 @@ import {
     PURGE,
     REGISTER,
 } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
 import companySlice from "./companySlice";
 import applicationSlice from "./applicationSlice";
+
+const storage = {
+    getItem: (key) => Promise.resolve(window.localStorage.getItem(key)),
+    setItem: (key, value) => {
+        window.localStorage.setItem(key, value);
+        return Promise.resolve();
+    },
+    removeItem: (key) => {
+        window.localStorage.removeItem(key);
+        return Promise.resolve();
+    },
+};
 
 const persistConfig = {
     key: 'root',
