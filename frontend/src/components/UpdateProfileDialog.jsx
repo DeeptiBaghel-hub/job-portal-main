@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
@@ -20,7 +20,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         phoneNumber: user?.phoneNumber || "",
         bio: user?.profile?.bio || "",
         skills: user?.profile?.skills?.map(skill => skill) || "",
-        file: user?.profile?.resume || ""
+        file: null,
+        profilePhoto: null
     });
     const dispatch = useDispatch();
 
@@ -44,6 +45,9 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         if (input.file) {
             formData.append("file", input.file);
         }
+        if (input.profilePhoto) {
+            formData.append("profilePhoto", input.profilePhoto);
+        }
         try {
             setLoading(true);
             const res = await axios.post(`${USER_API_END_POINT}/profile/update`, formData, {
@@ -58,7 +62,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || "Unable to update profile.");
         } finally{
             setLoading(false);
         }
@@ -70,7 +74,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 
     return (
         <div>
-            <Dialog open={open}>
+            <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent className="sm:max-w-[425px]" onInteractOutside={() => setOpen(false)}>
                     <DialogHeader>
                         <DialogTitle>Update Profile</DialogTitle>
@@ -81,7 +85,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                 <Label htmlFor="name" className="text-right">Name</Label>
                                 <Input
                                     id="name"
-                                    name="name"
+                                    name="fullname"
                                     type="text"
                                     value={input.fullname}
                                     onChange={changeEventHandler}
@@ -103,7 +107,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                 <Label htmlFor="number" className="text-right">Number</Label>
                                 <Input
                                     id="number"
-                                    name="number"
+                                    name="phoneNumber"
                                     value={input.phoneNumber}
                                     onChange={changeEventHandler}
                                     className="col-span-3"
@@ -116,6 +120,17 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                     name="bio"
                                     value={input.bio}
                                     onChange={changeEventHandler}
+                                    className="col-span-3"
+                                />
+                            </div>
+                            <div className='grid grid-cols-4 items-center gap-4'>
+                                <Label htmlFor="profilePhoto" className="text-right">Profile photo</Label>
+                                <Input
+                                    id="profilePhoto"
+                                    name="profilePhoto"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => setInput({ ...input, profilePhoto: e.target.files?.[0] || null })}
                                     className="col-span-3"
                                 />
                             </div>
@@ -142,6 +157,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                             </div>
                         </div>
                         <DialogFooter>
+                            <DialogClose render={<Button type="button" variant="outline" />}>Cancel</DialogClose>
                             {
                                 loading ? <Button className="w-full my-4"> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait </Button> : <Button type="submit" className="w-full my-4">Update</Button>
                             }

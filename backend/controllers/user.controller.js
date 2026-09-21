@@ -26,7 +26,8 @@ export const register = async (req, res) => {
         // Profile photo is optional on the signup form, so only touch
         // Cloudinary when a file was actually uploaded.
         let profilePhotoUrl = "";
-        const file = req.file;
+        const file = req.files?.file?.[0];
+        const profilePhoto = req.files?.profilePhoto?.[0];
         if (file) {
             const fileUri = getDataUri(file);
             const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
@@ -166,6 +167,12 @@ export const updateProfile = async (req, res) => {
             const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
             user.profile.resume = cloudResponse.secure_url; // save the cloudinary url
             user.profile.resumeOriginalName = file.originalname; // Save the original file name
+        }
+
+        if (profilePhoto) {
+            const fileUri = getDataUri(profilePhoto);
+            const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+            user.profile.profilePhoto = cloudResponse.secure_url;
         }
 
         await user.save();
