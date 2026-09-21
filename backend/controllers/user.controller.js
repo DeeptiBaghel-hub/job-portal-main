@@ -161,7 +161,8 @@ export const updateProfile = async (req, res) => {
 
         // Resume upload is optional here too - only hit Cloudinary if a
         // file was actually sent with this request.
-        const file = req.file;
+        const file = req.files?.file?.[0];
+        const profilePhoto = req.files?.profilePhoto?.[0];
         if (file) {
             const fileUri = getDataUri(file);
             const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
