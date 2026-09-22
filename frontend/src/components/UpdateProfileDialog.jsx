@@ -13,6 +13,7 @@ import { toast } from 'sonner'
 const UpdateProfileDialog = ({ open, setOpen }) => {
     const [loading, setLoading] = useState(false);
     const { user } = useSelector(store => store.auth);
+    const isStudent = user?.role === "student";
 
     const [input, setInput] = useState({
         fullname: user?.fullname || "",
@@ -144,7 +145,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                     className="col-span-3"
                                 />
                             </div>
-                            <div className='grid grid-cols-4 items-center gap-4'>
+                            {isStudent && <div className='grid grid-cols-4 items-center gap-4'>
                                 <Label htmlFor="file" className="text-right">Resume</Label>
                                 <Input
                                     id="file"
@@ -154,7 +155,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                     onChange={fileChangeHandler}
                                     className="col-span-3"
                                 />
-                            </div>
+                            </div>}
                         </div>
                         <DialogFooter>
                             <DialogClose render={<Button type="button" variant="outline" />}>Cancel</DialogClose>

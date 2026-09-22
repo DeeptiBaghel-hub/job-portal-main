@@ -15,11 +15,11 @@ export const postJob = async (req, res) => {
         const job = await Job.create({
             title,
             description,
-            requirements: requirements.split(","),
-            salary: Number(salary),
+            requirements: requirements.split(",").map((r) => r.trim()).filter(Boolean),
+            salary: String(salary).trim(), // keep as-is so ranges like "6-12" save correctly
             location,
             jobType,
-            experienceLevel: experience,
+            experienceLevel: String(experience).trim(), // e.g. "0-2"
             position,
             company: companyId,
             created_by: userId

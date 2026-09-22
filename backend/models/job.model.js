@@ -14,11 +14,11 @@ const jobSchema=new mongoose.Schema({
         default:[]
     },
     salary:{
-        type:Number,
+        type:String, // e.g. "6-12" (LPA) or "6" — stored as string so ranges can be saved correctly
         required:true
     },
     experienceLevel:{
-        type:Number,
+        type:String, // e.g. "0-2" (years) or "2"
         required:true,
     },
     location:{

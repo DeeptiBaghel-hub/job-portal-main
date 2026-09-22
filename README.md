@@ -1,4 +1,4 @@
-# Job Portal
+# CareerNest
 
 A full-stack MERN job portal that connects job seekers with recruiters. Job seekers can browse and filter jobs, apply, and track their applications; recruiters can register a company, post jobs, and manage applicants.
 
